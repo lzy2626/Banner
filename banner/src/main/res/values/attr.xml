@@ -15,11 +15,17 @@
         <attr name="indicator_default_height" format="dimension" />
         <attr name="indicator_space" format="dimension" />
         <attr name="indicator_margin_bottom" format="dimension" />
+        <attr name="indicator_margin_top" format="dimension" />
+        <attr name="indicator_margin_left" format="dimension" />
+        <attr name="indicator_margin_right" format="dimension" />
+        <attr name="indicator_padding_bottom" format="dimension" />
+        <attr name="indicator_padding_top" format="dimension" />
+        <attr name="indicator_padding_left" format="dimension" />
+        <attr name="indicator_padding_right" format="dimension" />
         <attr name="indicator_select_drawable" format="reference" />
         <attr name="indicator_default_drawable" format="reference" />
         <attr name="indicator_bacground" format="reference" />
         <attr name="indicator_bacground_color" format="color" />
-        <attr name="indicator_gravity" format="dimension" />
         <attr name="indicator_height" format="dimension" />
         <attr name="banner_single_anim" format="enum">
             <enum name="Default" value="0" />

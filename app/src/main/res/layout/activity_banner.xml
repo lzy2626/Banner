@@ -44,13 +44,14 @@
                 app:banner_multi_page="false"
                 app:banner_show_indicator="true"
                 app:banner_single_anim="Accordion"
+                app:indicator_bacground_color="#80000000"
                 app:indicator_default_drawable="@mipmap/line_normal"
                 app:indicator_default_height="@dimen/spacing_5"
                 app:indicator_default_width="@dimen/spacing_17"
+                app:indicator_padding_right="10dp"
                 app:indicator_select_drawable="@mipmap/line_select"
                 app:indicator_select_height="@dimen/spacing_5"
                 app:indicator_select_width="@dimen/spacing_32"
-                app:indicator_bacground_color="#80000000"
                 app:indicator_space="@dimen/spacing_5" />
 
             <com.geek.banner.Banner
@@ -208,18 +209,26 @@
                 app:banner_auto_play="true"
                 app:banner_interval_time="3000"
                 app:banner_multi_page="false"
-                app:banner_show_indicator="false"
-                app:banner_single_anim="Stack">
+                app:banner_show_indicator="true"
+                app:banner_single_anim="Accordion"
+                app:indicator_bacground_color="#80000000"
+                app:indicator_default_drawable="@mipmap/line_normal"
+                app:indicator_default_height="@dimen/spacing_5"
+                app:indicator_default_width="@dimen/spacing_17"
+                app:indicator_select_drawable="@mipmap/line_select"
+                app:indicator_select_height="@dimen/spacing_5"
+                app:indicator_select_width="@dimen/spacing_32"
+                app:indicator_space="@dimen/spacing_5">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/spacing_38"
+                    android:layout_height="match_parent"
                     android:layout_alignParentBottom="true"
-                    android:background="#33000000">
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:id="@+id/banner_10_text"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/spacing_16"
                         android:layout_weight="1"

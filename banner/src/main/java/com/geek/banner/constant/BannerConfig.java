@@ -16,4 +16,7 @@ public interface BannerConfig {
     int PAGE_SPACING = 10;
     int PAGER_TRANSFORM = 0;
 
+    int LEFT = 100;
+    int CENTER = 101;
+    int RIGHT = 102;
 }

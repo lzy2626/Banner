@@ -105,6 +105,18 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
     private int mIndicatorSpacing;
     //指示器距离底部高度
     private int mIndicatorMarginBottom;
+    //指示器距离右边高度
+    private int mIndicatorMarginRight;
+    //指示器距离左边高度
+    private int mIndicatorMarginLeft;
+    //指示器距离顶部高度
+    private int mIndicatorMarginTop;
+    private int mIndicatorPaddingTop;
+    private int mIndicatorPaddingBottom;
+    private int mIndicatorPaddingLeft;
+    private int mIndicatorPaddingRight;
+
+
     //指示器选中样式（默认白色圆点）
     private int mIndicatorSelectD;
     //指示器默认样式（默认灰色圆点）
@@ -113,8 +125,7 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
     private int mIndicatorBackground;
     //指示器背景颜色
     private int mIndicatorBackgroundColor;
-    //指示器位置
-    private int mIndicatorGravity;
+
 
     //加载ViewPager页面实例
     private BannerLoader mBannerLoader;
@@ -170,6 +181,15 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
         mIndicatorDefaultH = (int) ta.getDimension(R.styleable.Banner_indicator_default_height, dip2px(context, 8));
         mIndicatorSpacing = (int) ta.getDimension(R.styleable.Banner_indicator_space, dip2px(context, 6));
         mIndicatorMarginBottom = (int) ta.getDimension(R.styleable.Banner_indicator_margin_bottom, dip2px(context, 0));
+        mIndicatorMarginTop = (int) ta.getDimension(R.styleable.Banner_indicator_margin_top, dip2px(context, 0));
+        mIndicatorMarginLeft = (int) ta.getDimension(R.styleable.Banner_indicator_margin_left, dip2px(context, 0));
+        mIndicatorMarginRight = (int) ta.getDimension(R.styleable.Banner_indicator_margin_right, dip2px(context, 0));
+
+        mIndicatorPaddingBottom = (int) ta.getDimension(R.styleable.Banner_indicator_padding_bottom, dip2px(context, 0));
+        mIndicatorPaddingTop = (int) ta.getDimension(R.styleable.Banner_indicator_padding_top, dip2px(context, 0));
+        mIndicatorPaddingLeft = (int) ta.getDimension(R.styleable.Banner_indicator_padding_left, dip2px(context, 0));
+        mIndicatorPaddingRight = (int) ta.getDimension(R.styleable.Banner_indicator_padding_right, dip2px(context, 0));
+
         mIndicatorSelectD = ta.getResourceId(R.styleable.Banner_indicator_select_drawable, R.drawable.shape_banner_select_indicator);
         mIndicatorDefaultD = ta.getResourceId(R.styleable.Banner_indicator_default_drawable, R.drawable.shape_banner_default_indicator);
         mSingleTransform = ta.getInteger(R.styleable.Banner_banner_single_anim, BannerConfig.PAGER_TRANSFORM);
@@ -178,7 +198,6 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
         mMultiTransform = ta.getInteger(R.styleable.Banner_banner_multi_anim, BannerConfig.PAGER_TRANSFORM);
         mIndicatorBackground = ta.getResourceId(R.styleable.Banner_indicator_bacground, -1);
         mIndicatorBackgroundColor = ta.getColor(R.styleable.Banner_indicator_bacground_color, -1);
-        mIndicatorGravity = (int) ta.getDimension(R.styleable.Banner_indicator_gravity, Gravity.CENTER);
         mIndicatorHeight = (int) ta.getDimension(R.styleable.Banner_indicator_height, dip2px(context, 30));
         ta.recycle();
     }
@@ -226,16 +245,19 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
         LayoutParams params = (LayoutParams) mIndicatorLl.getLayoutParams();
         if (mIsMultiPage) {
             //指示器
-            params.leftMargin = mExposeWidth + mPageSpacing;
-            params.rightMargin = mExposeWidth + mPageSpacing;
+            params.leftMargin = mExposeWidth + mPageSpacing + mIndicatorMarginLeft;
+            params.rightMargin = mExposeWidth + mPageSpacing + mIndicatorMarginRight;
             params.bottomMargin = mIndicatorMarginBottom;
+            params.topMargin = mIndicatorMarginTop;
         } else {
-            params.leftMargin = 0;
-            params.rightMargin = 0;
+            params.leftMargin = mIndicatorMarginLeft;
+            params.rightMargin = mIndicatorMarginRight;
             params.bottomMargin = mIndicatorMarginBottom;
+            params.topMargin = mIndicatorMarginTop;
         }
         params.height = mIndicatorHeight;
         mIndicatorLl.setLayoutParams(params);
+        mIndicatorLl.setPadding(mIndicatorPaddingLeft, mIndicatorPaddingTop, mIndicatorPaddingRight, mIndicatorPaddingBottom);
 
         if (mIndicatorBackground != -1) {
             mIndicatorLl.setBackgroundDrawable(mContext.getResources().getDrawable(mIndicatorBackground));
@@ -244,7 +266,26 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
         if (mIndicatorBackgroundColor != -1) {
             mIndicatorLl.setBackgroundColor(mIndicatorBackgroundColor);
         }
-        mIndicatorLl.setGravity(mIndicatorGravity);
+    }
+
+    private int gravity = -1;
+
+    /**
+     * 设置指示器位置
+     */
+    public void setIndicatorGravity(int type) {
+        switch (type) {
+            case BannerConfig.LEFT:
+                this.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
+                break;
+            case BannerConfig.CENTER:
+                this.gravity = Gravity.CENTER;
+                break;
+            case BannerConfig.RIGHT:
+                this.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
+                break;
+        }
+        mIndicatorLl.setGravity(gravity);
     }
 
     /**
@@ -473,7 +514,6 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
         }
         //通知更新数据
         notifyBannerData();
-        Log.d(TAG, "loadImagePaths: banner所需元素：" + mImagePaths);
     }
 
     /**
@@ -668,9 +708,6 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
         if (mBannerPagerChangedListener != null) {
             mBannerPagerChangedListener.onPageSelected(findRealPosition(position));
         }
-        Log.d(TAG, "onPageSelected: 当前位置：" + mCurrentIndex
-                + "\n"
-                + "实际位置：" + findRealPosition(position));
     }
 
     /**
