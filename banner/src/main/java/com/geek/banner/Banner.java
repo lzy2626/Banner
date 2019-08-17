@@ -370,10 +370,10 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
                     || action == MotionEvent.ACTION_CANCEL
                     || action == MotionEvent.ACTION_OUTSIDE) {
                 startAutoPlay();
-                Log.d(TAG, "dispatchTouchEvent: 开始轮播");
+//                Log.d(TAG, "dispatchTouchEvent: 开始轮播");
             } else if (action == MotionEvent.ACTION_DOWN) {
                 stopAutoPlay();
-                Log.d(TAG, "dispatchTouchEvent: 取消轮播");
+//                Log.d(TAG, "dispatchTouchEvent: 取消轮播");
             }
         }
         return super.dispatchTouchEvent(ev);
@@ -636,7 +636,7 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
                     mWeakHandler.postDelayed(mBannerPlayRunnable, mIntervalTime);
                 }
             }
-            Log.d(TAG, "run: 下标：" + mCurrentIndex);
+//            Log.d(TAG, "run: 下标：" + mCurrentIndex);
         }
     };
 
@@ -659,7 +659,7 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
         //多点触碰滑动，不做处理，你非要这样，我也没办法
         switch (state) {
             case 0:
-                Log.d(TAG, "onPageScrollStateChanged: 空闲");
+//                Log.d(TAG, "onPageScrollStateChanged: 空闲");
                 break;
             case 1:
                 if (mIsMultiPage) {
@@ -682,11 +682,11 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
                         mViewPager.setCurrentItem(1, false);
                     }
                 }
-                Log.d(TAG, "onPageScrollStateChanged: 按下拖拽：" + mCurrentIndex);
+//                Log.d(TAG, "onPageScrollStateChanged: 按下拖拽：" + mCurrentIndex);
                 break;
             case 2:
                 // TODO: 2018/12/3
-                Log.d(TAG, "onPageScrollStateChanged: 抬起");
+//                Log.d(TAG, "onPageScrollStateChanged: 抬起");
                 break;
         }
     }
