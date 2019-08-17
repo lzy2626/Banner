@@ -8,9 +8,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.PageTransformer;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -89,22 +91,30 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
     private int mMultiTransform;
     //Banner无数据默认显示
     private int mDefaultBanner;
-    //指示器选中宽度
+    //指示器高度
+    private int mIndicatorHeight;
+    //指示器icon选中宽度
     private int mIndicatorSelectedW;
-    //指示器默认宽度
+    //指示器icon默认宽度
     private int mIndicatorDefaultW;
-    //指示器选中高度
+    //指示器icon选中高度
     private int mIndicatorSelectedH;
-    //指示器默认高度
+    //指示器icon默认高度
     private int mIndicatorDefaultH;
     //指示器间距
     private int mIndicatorSpacing;
     //指示器距离底部高度
     private int mIndicatorMarginBottom;
-    //指示器选中样式
+    //指示器选中样式（默认白色圆点）
     private int mIndicatorSelectD;
-    //指示器默认样式
+    //指示器默认样式（默认灰色圆点）
     private int mIndicatorDefaultD;
+    //指示器背景图(默认无)
+    private int mIndicatorBackground;
+    //指示器背景颜色
+    private int mIndicatorBackgroundColor;
+    //指示器位置
+    private int mIndicatorGravity;
 
     //加载ViewPager页面实例
     private BannerLoader mBannerLoader;
@@ -159,11 +169,17 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
         mIndicatorSelectedH = (int) ta.getDimension(R.styleable.Banner_indicator_select_height, dip2px(context, 8));
         mIndicatorDefaultH = (int) ta.getDimension(R.styleable.Banner_indicator_default_height, dip2px(context, 8));
         mIndicatorSpacing = (int) ta.getDimension(R.styleable.Banner_indicator_space, dip2px(context, 6));
-        mIndicatorMarginBottom = (int) ta.getDimension(R.styleable.Banner_indicator_margin_bottom, dip2px(context, 10));
+        mIndicatorMarginBottom = (int) ta.getDimension(R.styleable.Banner_indicator_margin_bottom, dip2px(context, 0));
         mIndicatorSelectD = ta.getResourceId(R.styleable.Banner_indicator_select_drawable, R.drawable.shape_banner_select_indicator);
         mIndicatorDefaultD = ta.getResourceId(R.styleable.Banner_indicator_default_drawable, R.drawable.shape_banner_default_indicator);
         mSingleTransform = ta.getInteger(R.styleable.Banner_banner_single_anim, BannerConfig.PAGER_TRANSFORM);
         mMultiTransform = ta.getInteger(R.styleable.Banner_banner_multi_anim, BannerConfig.PAGER_TRANSFORM);
+        mMultiTransform = ta.getInteger(R.styleable.Banner_banner_multi_anim, BannerConfig.PAGER_TRANSFORM);
+        mMultiTransform = ta.getInteger(R.styleable.Banner_banner_multi_anim, BannerConfig.PAGER_TRANSFORM);
+        mIndicatorBackground = ta.getResourceId(R.styleable.Banner_indicator_bacground, -1);
+        mIndicatorBackgroundColor = ta.getColor(R.styleable.Banner_indicator_bacground_color, -1);
+        mIndicatorGravity = (int) ta.getDimension(R.styleable.Banner_indicator_gravity, Gravity.CENTER);
+        mIndicatorHeight = (int) ta.getDimension(R.styleable.Banner_indicator_height, dip2px(context, 30));
         ta.recycle();
     }
 
@@ -207,19 +223,28 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
         if (mShowIndicator) {
             mIndicatorLl.setVisibility(VISIBLE);
         }
-        int defaultMargin = dip2px(mContext, 16);
         LayoutParams params = (LayoutParams) mIndicatorLl.getLayoutParams();
         if (mIsMultiPage) {
             //指示器
-            params.leftMargin = mExposeWidth + mPageSpacing + defaultMargin;
-            params.rightMargin = mExposeWidth + mPageSpacing + defaultMargin;
+            params.leftMargin = mExposeWidth + mPageSpacing;
+            params.rightMargin = mExposeWidth + mPageSpacing;
             params.bottomMargin = mIndicatorMarginBottom;
         } else {
-            params.leftMargin = defaultMargin;
-            params.rightMargin = defaultMargin;
+            params.leftMargin = 0;
+            params.rightMargin = 0;
             params.bottomMargin = mIndicatorMarginBottom;
         }
+        params.height = mIndicatorHeight;
         mIndicatorLl.setLayoutParams(params);
+
+        if (mIndicatorBackground != -1) {
+            mIndicatorLl.setBackgroundDrawable(mContext.getResources().getDrawable(mIndicatorBackground));
+        }
+
+        if (mIndicatorBackgroundColor != -1) {
+            mIndicatorLl.setBackgroundColor(mIndicatorBackgroundColor);
+        }
+        mIndicatorLl.setGravity(mIndicatorGravity);
     }
 
     /**

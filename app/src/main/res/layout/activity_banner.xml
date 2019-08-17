@@ -50,6 +50,7 @@
                 app:indicator_select_drawable="@mipmap/line_select"
                 app:indicator_select_height="@dimen/spacing_5"
                 app:indicator_select_width="@dimen/spacing_32"
+                app:indicator_bacground_color="#80000000"
                 app:indicator_space="@dimen/spacing_5" />
 
             <com.geek.banner.Banner
