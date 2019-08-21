@@ -53,6 +53,7 @@ public class RoundRectLayout extends RelativeLayout {
     }
 
     private void init() {
+        setBackgroundDrawable(new ColorDrawable(00000000));
         mPath = new Path();
         mPath.setFillType(Path.FillType.EVEN_ODD);
     }

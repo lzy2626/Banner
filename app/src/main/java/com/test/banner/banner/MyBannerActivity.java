@@ -82,16 +82,15 @@ public class MyBannerActivity extends AppCompatActivity {
 
             @Override
             public View createView(Context context) {
-                View pager = LayoutInflater.from(context).inflate(R.layout.my_banner_item, null);
-                return pager;
+                View item = LayoutInflater.from(context).inflate(R.layout.my_banner_item, null);
+                return item;
             }
         });
         if (mTitle.size() > 0) {
             bannerText.setText(mTitle.get(0));
         }
-        banner0.setCornerRadius(4);
+        banner0.setCornerRadius(10);
         banner0.loadImagePaths(mURLs.subList(0,1));
-
 
 
         banner1.setBannerLoader(new BannerLoader<String, View>() {

@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -64,7 +65,7 @@ public class Banner extends RoundRectLayout implements ViewPager.OnPageChangeLis
     public static final int MULTIPAGE_EXTRA_NUM = 4;
 
     private BannerViewPager mViewPager;
-    private LinearLayout llOnePage;
+    private FrameLayout llOnePage;
     private LinearLayout mIndicatorLl;
     private ImageView mDefaultImg;
 
@@ -837,7 +838,7 @@ public class Banner extends RoundRectLayout implements ViewPager.OnPageChangeLis
                 }
             }
         });
-        //添加一页时的view
+        //添加只有一条数据时的item_view
         llOnePage.addView(pagerOne);
     }
 
