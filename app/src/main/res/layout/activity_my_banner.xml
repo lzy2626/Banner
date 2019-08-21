@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.geek.banner.Banner
+        android:id="@+id/banner0"
+        android:layout_width="match_parent"
+        android:layout_height="178dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="9dp"
+        app:banner_auto_play="true"
+        app:banner_expose_width="0dp"
+        app:banner_interval_time="3000"
+        app:banner_multi_anim="Non"
+        app:banner_multi_page="false"
+        app:indicator_bacground_color="#80000000"
+        app:indicator_height="40dp"
+        app:indicator_padding_right="15dp">
+
+        <TextView
+            android:id="@+id/banner_text"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="18dp"
+            android:gravity="center_vertical"
+            android:text="测试~"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+    </com.geek.banner.Banner>
+
+
+    <com.geek.banner.Banner
+        android:id="@+id/banner1"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/transparent"
+        app:banner_auto_play="true"
+        app:banner_expose_width="0dp"
+        app:banner_interval_time="3000"
+        app:banner_multi_anim="Non"
+        app:banner_multi_page="true"
+        app:banner_page_spacing="9dp"
+        app:banner_show_indicator="true" />
+</LinearLayout>

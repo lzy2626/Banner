@@ -41,6 +41,7 @@
         </activity>
 
         <activity android:name=".banner.BannerActivity" />
+        <activity android:name=".banner.MyBannerActivity" />
     </application>
 
 </manifest>

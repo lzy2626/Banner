@@ -5,15 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.test.banner.banner.BannerActivity;
+import com.test.banner.banner.MyBannerActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
-
-    @BindView(R.id.banner_tv)
-    TextView bannerTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +22,6 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.banner_tv)
     public void onBannerTvClicked() {
-        BannerActivity.start(this);
+        MyBannerActivity.start(this);
     }
 }

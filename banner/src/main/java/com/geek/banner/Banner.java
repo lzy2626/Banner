@@ -44,6 +44,7 @@ import com.geek.banner.transformer.simple.ZoomOutSlideTransformer;
 import com.geek.banner.transformer.simple.ZoomOutTranformer;
 import com.geek.banner.widget.BannerScroller;
 import com.geek.banner.widget.BannerViewPager;
+import com.geek.banner.widget.RoundRectLayout;
 import com.geek.banner.widget.WeakHandler;
 
 import java.lang.reflect.Field;
@@ -56,13 +57,14 @@ import java.util.List;
  * @E-mail: xxx@163.com
  * @Description: 超级轮播图~
  */
-public class Banner extends RelativeLayout implements ViewPager.OnPageChangeListener {
+public class Banner extends RoundRectLayout implements ViewPager.OnPageChangeListener {
 
     public static final String TAG = "banner";
     public static final int NORMAL_EXTRA_NUM = 2;
     public static final int MULTIPAGE_EXTRA_NUM = 4;
 
     private BannerViewPager mViewPager;
+    private LinearLayout llOnePage;
     private LinearLayout mIndicatorLl;
     private ImageView mDefaultImg;
 
@@ -206,8 +208,11 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
      * 初始化View
      */
     private void initView() {
-        //控件初始化
+        //多图显示控件
         mViewPager = findViewById(R.id.banner_vp);
+        //单图显示控件
+        llOnePage = findViewById(R.id.ll_one_page);
+
         mIndicatorLl = findViewById(R.id.indicator_ll);
         mDefaultImg = findViewById(R.id.default_iv);
         //默认Image
@@ -477,17 +482,23 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
         mImagePaths.clear();
         mBannerItems.clear();
         mRealPagers = imagePaths.size();
-        //清除仅一页时，添加的View
-        View lastOnePager = findViewById(R.id.image_key);
-        if (lastOnePager != null)
-            removeView(lastOnePager);
-        if (imagePaths.size() == 1) {
-            //仅有一页时
-            createOnlyOnePager(imagePaths.get(0));
-            return;
-        }
         //创建指示器
         createDefaultIndicator(mRealPagers);
+
+        //一页时使用llOnePage，多页时使用mViewPager
+        if (imagePaths.size() == 1) {
+            //仅有一页时
+            llOnePage.removeAllViews();
+            llOnePage.setVisibility(VISIBLE);
+            mViewPager.setVisibility(GONE);
+            createOnlyOnePager(imagePaths.get(0));
+            return;
+        } else {
+            //多页时，清除仅一页时，添加的View
+            llOnePage.removeAllViews();
+            llOnePage.setVisibility(GONE);
+            mViewPager.setVisibility(VISIBLE);
+        }
         //数据源处理
         if (mIsMultiPage) {
             //多添加4页
@@ -764,7 +775,9 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
      * @param size
      */
     private void createDefaultIndicator(int size) {
-        if (!mShowIndicator) return;
+        if (!mShowIndicator) {
+            return;
+        }
         mIndicatorLl.removeAllViews();
         while (size > 0) {
             View view = new View(mContext);
@@ -783,7 +796,9 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
      * @param aimsPosition
      */
     private void setSelectedIndicator(int aimsPosition) {
-        if (!mShowIndicator) return;
+        if (!mShowIndicator) {
+            return;
+        }
         int childCount = mIndicatorLl.getChildCount();
         if (aimsPosition > childCount - 1) return;
         View beforeChild = mIndicatorLl.getChildAt(mCurIndicatorIndex);
@@ -807,6 +822,11 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
      * @param path
      */
     private void createOnlyOnePager(Object path) {
+        if (mBannerLoader == null) {
+            Log.e(TAG, "please setBannerLoader before loadImagePaths()!!");
+        }
+
+        mIndicatorLl.removeAllViews();
         View pagerOne = mBannerLoader.createView(mViewPager.getContext());
         mBannerLoader.loadView(mViewPager.getContext(), path, pagerOne);
         pagerOne.setOnClickListener(new OnClickListener() {
@@ -817,11 +837,8 @@ public class Banner extends RelativeLayout implements ViewPager.OnPageChangeList
                 }
             }
         });
-        pagerOne.setId(R.id.image_key);
-        //添加
-        LayoutParams onePagerParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        addView(pagerOne, onePagerParams);
+        //添加一页时的view
+        llOnePage.addView(pagerOne);
     }
 
     /**
