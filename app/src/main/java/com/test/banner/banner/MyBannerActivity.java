@@ -12,9 +12,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.geek.banner.Banner;
 import com.geek.banner.loader.BannerLoader;
 import com.test.banner.R;
+import com.test.banner.utils.PixelUtils;
+import com.test.banner.utils.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +37,15 @@ public class MyBannerActivity extends AppCompatActivity {
     Banner banner0;
     @BindView(R.id.banner_text)
     TextView bannerText;
-
     @BindView(R.id.banner1)
     Banner banner1;
+    @BindView(R.id.banner1_text)
+    TextView banner1Text;
+
+    @BindView(R.id.banner2)
+    Banner banner2;
+    @BindView(R.id.banner3)
+    Banner banner3;
     private List<String> mURLs = new ArrayList<>();
     private List<Integer> mRes = new ArrayList<>();
     private List<String> mTitle = new ArrayList<>();
@@ -90,9 +100,10 @@ public class MyBannerActivity extends AppCompatActivity {
             bannerText.setText(mTitle.get(0));
         }
         banner0.setCornerRadius(10);
-        banner0.loadImagePaths(mURLs.subList(0,1));
-
-
+        banner0.loadImagePaths(mURLs.subList(0, 1));
+        /**
+         * 2.多张图片，并且显示指示器
+         */
         banner1.setBannerLoader(new BannerLoader<String, View>() {
             @Override
             public void loadView(Context context, String path, View view) {
@@ -104,11 +115,68 @@ public class MyBannerActivity extends AppCompatActivity {
 
             @Override
             public View createView(Context context) {
+                View item = LayoutInflater.from(context).inflate(R.layout.my_banner_item, null);
+                return item;
+            }
+        });
+        if (mTitle.size() > 0) {
+            banner1Text.setText(mTitle.get(0));
+        }
+        banner1.setCornerRadius(10);
+        banner1.loadImagePaths(mURLs);
+
+
+        /**
+         * 3.贴边滑动
+         */
+        banner2.setBannerLoader(new BannerLoader<String, View>() {
+            @Override
+            public void loadView(Context context, String path, View view) {
+                ImageView banner = view.findViewById(R.id.custom_iv);
+                //设置图片圆角角度
+                RoundedCorners roundedCorners= new RoundedCorners(10);
+                //通过RequestOptions扩展功能,override:采样率,因为ImageView就这么大,可以压缩图片,降低内存消耗
+                RequestOptions options=RequestOptions.bitmapTransform(roundedCorners).override(300, 300);
+
+                Glide.with(context)
+                        .load(path)
+                        .apply(options)
+                        .into(banner);
+            }
+
+            @Override
+            public View createView(Context context) {
                 View pager = LayoutInflater.from(context).inflate(R.layout.my_banner_item, null);
                 return pager;
             }
         });
-        banner1.loadImagePaths(mURLs);
+        banner2.loadImagePaths(mURLs);
+
+        /**
+         * 4.贴边，多页滑动
+         */
+        banner3.setBannerLoader(new BannerLoader<String, View>() {
+            @Override
+            public void loadView(Context context, String path, View view) {
+                ImageView banner = view.findViewById(R.id.custom_iv);
+                //设置图片圆角角度
+                RoundedCorners roundedCorners= new RoundedCorners(10);
+                //通过RequestOptions扩展功能,override:采样率,因为ImageView就这么大,可以压缩图片,降低内存消耗
+                RequestOptions options=RequestOptions.bitmapTransform(roundedCorners).override(300, 300);
+
+                Glide.with(context)
+                        .load(path)
+                        .apply(options)
+                        .into(banner);
+            }
+
+            @Override
+            public View createView(Context context) {
+                View pager = LayoutInflater.from(context).inflate(R.layout.my_banner_item, null);
+                return pager;
+            }
+        });
+        banner3.loadImagePaths(mURLs);
     }
 
 }
